@@ -18,7 +18,7 @@ int main()
     }
     while ((line = get_next_line(fd)) != NULL)
     {
-        printf("line: %s", line);
+        printf("\n>>>line: %s", line);
         free(line);
     }
     close(fd);

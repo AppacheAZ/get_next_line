@@ -1,6 +1,52 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marcoalv <marcoalv@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/20 18:23:00 by marcoalv          #+#    #+#             */
+/*   Updated: 2023/11/20 20:30:49 by marcoalv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include <unistd.h>
 #include "get_next_line.h"
+
+char	**ft_free(char **result, int co)
+{
+	int	f;
+
+	f = 0;
+	while (f < co)
+	{
+		free(result[f]);
+		f++;
+	}
+	free(result);
+	return (NULL);
+}
+
+char	*ft_next(char *buffer)
+{
+	char	*temp;
+	int		i;
+	int		j;
+
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	temp = ft_calloc(ft_strlen(buffer) - i + 1, sizeof(char));
+	if (!temp || !buffer)
+		return (NULL);
+	i++;
+	j = 0;
+	while (buffer[i] && buffer[i] != '\n')
+		temp[j++] = buffer[i++];
+	free(buffer);
+	return (temp);
+}
 
 char	*read_file(int fd, char *buffer_prime)
 {
@@ -27,7 +73,6 @@ char	*read_file(int fd, char *buffer_prime)
 		buffer[byte_read] = '\0';
 		buffer_prime = ft_strjoin(buffer_prime, buffer);
         x += 1;
-        printf("\nbyte read: %i, bucle times: %i\n", byte_read, x);
         if (ft_strchr(buffer_prime, '\n'))
             break;
 	}
@@ -59,10 +104,11 @@ char	*get_next_line(int fd)
         buffer = ft_strdup(line + 1);
         return(temp);
     }
-
-    temp = ft_strdup(buffer);
-    free(buffer);
-    buffer = NULL;
+	temp = ft_strdup(buffer);
+	free(buffer);
+	if(ft_strchr(temp, '\0'))
+		return (temp);
+	buffer = ft_next(buffer);
 
 	return (temp);
 }

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: marcoalv <marcoalv@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/20 18:23:13 by marcoalv          #+#    #+#             */
+/*   Updated: 2023/11/20 19:39:43 by marcoalv         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "get_next_line.h"
 
 size_t ft_strlcpy(char *dst, const char *src, size_t dstsize)
@@ -75,7 +87,7 @@ char	*ft_strdup(const char *s)
 {
 	char	*ptr;
 	size_t	n;
-
+	
 	n = ft_strlen(s);
 	ptr = (char *)malloc(n + 1 * sizeof(char));
 	if (ptr == NULL)
