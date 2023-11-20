@@ -10,7 +10,7 @@ int main()
     clock_t final;
     double  time;
     inicio = clock();
-    int fd = open("examples/100K.txt", O_RDONLY);
+    int fd = open("examples/hola.txt", O_RDONLY);
     if(fd == -1)
     {
         perror("File not opened");
