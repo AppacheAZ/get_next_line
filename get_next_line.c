@@ -6,13 +6,26 @@
 /*   By: marcoalv <marcoalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:23:00 by marcoalv          #+#    #+#             */
-/*   Updated: 2023/11/20 20:30:49 by marcoalv         ###   ########.fr       */
+/*   Updated: 2023/11/20 21:03:59 by marcoalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <unistd.h>
 #include "get_next_line.h"
+
+char	*ft_strdup(const char *s)
+{
+	char	*ptr;
+	size_t	n;
+
+	n = ft_strlen(s);
+	ptr = (char *)malloc(n + 1 * sizeof(char));
+	if (ptr == NULL)
+		return (NULL);
+	ft_strlcpy(ptr, s, n + 1);
+	return (ptr);
+}
 
 char	**ft_free(char **result, int co)
 {
@@ -44,7 +57,7 @@ char	*ft_next(char *buffer)
 	j = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		temp[j++] = buffer[i++];
-	free(buffer);
+	ft_free(&buffer, ft_strlen(buffer));
 	return (temp);
 }
 
@@ -52,63 +65,51 @@ char	*read_file(int fd, char *buffer_prime)
 {
 	char	*buffer;
 	int		byte_read;
-    int     x;
 
 	if (!buffer_prime)
 		buffer_prime = ft_calloc(1, 1);
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	byte_read = 1;
-    x = 0;
-
 	while (byte_read > 0 && !ft_strchr(buffer_prime, '\n'))
 	{
 		byte_read = read(fd, buffer, BUFFER_SIZE);
 		if (byte_read == -1)
-		{
-			free(buffer);
-			return (NULL);
-		}
-        if (byte_read == 0)
-            break;
+			return (*ft_free(&buffer, ft_strlen(buffer)));
+		if (byte_read == 0)
+			break ;
 		buffer[byte_read] = '\0';
 		buffer_prime = ft_strjoin(buffer_prime, buffer);
-        x += 1;
-        if (ft_strchr(buffer_prime, '\n'))
-            break;
+		if (ft_strchr(buffer_prime, '\n'))
+			break ;
 	}
-
 	free(buffer);
 	return (buffer_prime);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buffer;
-	char		*line;
-    char        *temp;
+	static char		*buffer;
+	char			*line;
+	char			*temp;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
-
 	buffer = read_file(fd, buffer);
-
 	if (!buffer)
 		return (NULL);
-
 	line = ft_strchr(buffer, '\n');
 	if (line)
-    {
+	{
 		*line = '\0';
-        temp = ft_strdup(buffer);
-        free(buffer);
-        buffer = ft_strdup(line + 1);
-        return(temp);
-    }
+		temp = ft_strdup(buffer);
+		free(buffer);
+		buffer = ft_strdup(line + 1);
+		return (temp);
+	}
 	temp = ft_strdup(buffer);
 	free(buffer);
-	if(ft_strchr(temp, '\0'))
+	if (ft_strchr(temp, '\0'))
 		return (temp);
 	buffer = ft_next(buffer);
-
 	return (temp);
 }

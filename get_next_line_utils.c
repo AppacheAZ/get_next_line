@@ -6,60 +6,55 @@
 /*   By: marcoalv <marcoalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:23:13 by marcoalv          #+#    #+#             */
-/*   Updated: 2023/11/20 19:39:43 by marcoalv         ###   ########.fr       */
+/*   Updated: 2023/11/20 21:33:55 by marcoalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t ft_strlcpy(char *dst, const char *src, size_t dstsize)
+size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-    size_t i;
-    size_t aux;
-    i = 0;
-    aux = dstsize - 1;
-    if (dstsize == 0)
-        return ft_strlen(src);
-    else if (dstsize <= ft_strlen(src)){
-        while(aux--){
-            dst[i] = src[i];
-            i ++;
-        }
-        dst[i] = '\0';
-    }
-    else if (dstsize > ft_strlen(src)){
-        while(src[i] != '\0'){
-            dst[i] = src[i];
-            i ++;
-        }
-        dst[i] = '\0';
-    }
-    return ft_strlen(src);
+	size_t	i;
+	size_t	aux;
+
+	i = 0;
+	aux = dstsize - 1;
+	if (dstsize == 0)
+		return (ft_strlen(src));
+	else if (dstsize <= ft_strlen(src) || dstsize > ft_strlen(src))
+	{
+		while (aux-- || src[i] != '\0')
+		{
+			dst[i] = src[i];
+			i ++;
+		}
+		dst[i] = '\0';
+	}
+	return (ft_strlen(src));
 }
 
-void ft_bzero(void *s, size_t n)
+void	ft_bzero(void *s, size_t n)
 {
-    size_t i;
-    unsigned char * c;
+	size_t			i;
+	unsigned char	*c;
 
-    c = (unsigned char * )s;
-
-    i = 0;
-
-    while(i < n){
-        c[i] = '\0';
-        i ++;
-    }
+	c = (unsigned char *) s;
+	i = 0;
+	while (i < n)
+	{
+		c[i] = '\0';
+		i ++;
+	}
 }
 
-unsigned long ft_strlen(const char *s)
+unsigned long	ft_strlen(const char *s)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (s[i] != '\0')
-        i++;
-    return (i);
+	i = 0;
+	while (s[i] != '\0')
+		i++;
+	return (i);
 }
 
 char	*ft_strchr(const char *str, int c)
@@ -72,7 +67,7 @@ char	*ft_strchr(const char *str, int c)
 	return ((char *)str);
 }
 
-void *ft_calloc(size_t count, size_t size)
+void	*ft_calloc(size_t count, size_t size)
 {
 	void	*ptr;
 
@@ -80,19 +75,6 @@ void *ft_calloc(size_t count, size_t size)
 	if (ptr == NULL)
 		return (NULL);
 	ft_bzero(ptr, count * size);
-	return (ptr);
-}
-
-char	*ft_strdup(const char *s)
-{
-	char	*ptr;
-	size_t	n;
-	
-	n = ft_strlen(s);
-	ptr = (char *)malloc(n + 1 * sizeof(char));
-	if (ptr == NULL)
-		return (NULL);
-	ft_strlcpy(ptr, s, n + 1);
 	return (ptr);
 }
 
