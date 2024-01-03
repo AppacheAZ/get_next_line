@@ -6,32 +6,11 @@
 /*   By: marcoalv <marcoalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:23:13 by marcoalv          #+#    #+#             */
-/*   Updated: 2023/11/20 21:33:55 by marcoalv         ###   ########.fr       */
+/*   Updated: 2024/01/03 18:10:28 by marcoalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-size_t	ft_strlcpy(char *dst, const char *src, size_t dstsize)
-{
-	size_t	i;
-	size_t	aux;
-
-	i = 0;
-	aux = dstsize - 1;
-	if (dstsize == 0)
-		return (ft_strlen(src));
-	else if (dstsize <= ft_strlen(src) || dstsize > ft_strlen(src))
-	{
-		while (aux-- || src[i] != '\0')
-		{
-			dst[i] = src[i];
-			i ++;
-		}
-		dst[i] = '\0';
-	}
-	return (ft_strlen(src));
-}
 
 void	ft_bzero(void *s, size_t n)
 {

@@ -6,7 +6,7 @@
 /*   By: marcoalv <marcoalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:23:00 by marcoalv          #+#    #+#             */
-/*   Updated: 2024/01/03 17:41:18 by marcoalv         ###   ########.fr       */
+/*   Updated: 2024/01/03 18:44:18 by marcoalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,34 @@ char	*ft_strdup(const char *s)
 {
 	char	*ptr;
 	size_t	n;
+	size_t	i;
+	size_t	aux;
 
 	n = ft_strlen(s);
 	ptr = (char *)malloc(n + 1 * sizeof(char));
-	if(n == 0)
+	if (n == 0)
 		return (ptr);
-	ft_strlcpy(ptr, s, n + 1);
+	i = 0;
+	aux = n;
+	if (n == 0)
+		return (NULL);
+	else if (n <= ft_strlen(s) || n > ft_strlen(s))
+	{
+		while (aux-- || s[i] != '\0')
+		{
+			ptr[i] = s[i];
+			i ++;
+		}
+		ptr[i] = '\0';
+	}
 	return (ptr);
 }
 
 char	**ft_free(char **result, int co)
 {
 	int	f;
-	
-	if(!result || !*result || !**result)
+
+	if (!result || !*result || !**result)
 		return (NULL);
 	f = 0;
 	while (f < co)
@@ -65,57 +79,54 @@ char	*ft_next(char *buffer)
 
 char	*read_file(int fd, char *buffer_prime)
 {
-	char	*bufferREAD;
+	char	*buffer_read;
 	int		byte_read;
 
 	if (!buffer_prime)
 		buffer_prime = ft_calloc(1, 1);
-	bufferREAD = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	buffer_read = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	byte_read = 1;
 	while (byte_read >= 0 && !ft_strchr(buffer_prime, '\n'))
 	{
-		byte_read = read(fd, bufferREAD, BUFFER_SIZE);
+		byte_read = read(fd, buffer_read, BUFFER_SIZE);
 		if (byte_read == -1)
-			return (*ft_free(&bufferREAD, ft_strlen(bufferREAD)));
+			return (*ft_free(&buffer_read, ft_strlen(buffer_read)));
 		if (byte_read == 0)
 			break ;
-		bufferREAD[byte_read] = '\0';
-		buffer_prime = ft_strjoin(buffer_prime, bufferREAD);
+		buffer_read[byte_read] = '\0';
+		buffer_prime = ft_strjoin(buffer_prime, buffer_read);
 		if (ft_strchr(buffer_prime, '\n'))
 			break ;
 	}
-	free(bufferREAD);
+	free(buffer_read);
 	return (buffer_prime);
 }
 
 char	*get_next_line(int fd)
 {
-	static char		*bufferGNL;
+	static char		*buffer_gnl;
 	char			*line;
 	char			*temp;
-	char			**p_char;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
-	bufferGNL = read_file(fd, bufferGNL);
-	printf("\nGNL-read(bufferGNL): %s\n", bufferGNL);
-	if (!bufferGNL || !*bufferGNL)
+	buffer_gnl = read_file(fd, buffer_gnl);
+	if (!buffer_gnl || !*buffer_gnl)
 		return (NULL);
-	line = ft_strchr(bufferGNL, '\n');
+	line = ft_strchr(buffer_gnl, '\n');
 	if (line)
 	{
 		*line = '\0';
-		temp = ft_strdup(bufferGNL);
-		free(bufferGNL);
-		bufferGNL = ft_strdup(line + 1);
+		temp = ft_strdup(buffer_gnl);
+		free(buffer_gnl);
+		buffer_gnl = ft_strdup(line + 1);
 		return (temp);
 	}
-	temp = ft_strdup(bufferGNL);
-	p_char = &bufferGNL;
-	printf("\nGNL-bufferGNL: %p::%s\n", p_char, bufferGNL);
-	free(bufferGNL);
+	temp = ft_strdup(buffer_gnl);
+	free(buffer_gnl);
 	if (ft_strchr(temp, '\0'))
 		return (temp);
-	bufferGNL = ft_next(bufferGNL);
+	buffer_gnl = ft_next(buffer_gnl);
+	ft_free(&buffer_gnl, ft_strlen(buffer_gnl));
 	return (temp);
 }
