@@ -10,7 +10,7 @@ int main()
     clock_t final;
     double  time;
     inicio = clock();
-    int fd = open("examples/hola.txt", O_RDONLY);
+    int fd = open("examples/100K.txt", O_RDONLY);
     if(fd == -1)
     {
         perror("File not opened");
@@ -18,8 +18,9 @@ int main()
     }
     while ((line = get_next_line(fd)) != NULL)
     {
-        printf("\n>>>line: %s", line);
+        printf("\nMAIN----------------->line: %s", line);
         free(line);
+        printf("\nMAIN-Se libera memoria de la linea\n");
     }
     close(fd);
     final = clock();
