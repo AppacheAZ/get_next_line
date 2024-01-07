@@ -18,29 +18,33 @@
 int	main(void)
 {
 	char		*line;
-	clock_t		inicio;
-	clock_t		final;
+	clock_t		start;
+	clock_t		end;
 	double		time;
 	int			fd;
 
-	inicio = clock();
+	line = "Pointer to hold the current memmory being allocated";
+	start = clock();
+
+	//File Descriptor number to access a resources in Unix
 	fd = open("examples/100K.txt", O_RDONLY);
 	if (fd == -1)
 	{
 		perror("File not opened");
 		return (1);
 	}
-	while (line != NULL)
+
+	//Read and print the lines usging Get Next Line function
+	while ((line = get_next_line(fd)) != NULL)
 	{
-		line = get_next_line(fd);
 		if (line == NULL)
 			break ;
 		printf("\nLINE--->: %s", line);
 		free(line);
 	}
 	close(fd);
-	final = clock();
-	time = (double)(final - inicio) / CLOCKS_PER_SEC;
+	end = clock();
+	time = (double)(end - start) / CLOCKS_PER_SEC;
 	printf("\nExecution time for 100Kb: %f(s)\n", time);
 	return (0);
 }
