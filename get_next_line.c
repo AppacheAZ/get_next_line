@@ -6,7 +6,7 @@
 /*   By: marcoalv <marcoalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:23:00 by marcoalv          #+#    #+#             */
-/*   Updated: 2024/01/03 18:44:18 by marcoalv         ###   ########.fr       */
+/*   Updated: 2024/01/22 19:04:30 by marcoalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,14 @@ char	*ft_strdup(const char *s)
 	size_t	n;
 	size_t	i;
 	size_t	aux;
-
+	
+	i = 0;
 	n = ft_strlen(s);
 	ptr = (char *)malloc(n + 1 * sizeof(char));
 	if (n == 0)
 		return (ptr);
-	i = 0;
+	if (!ptr || !s || !s[i])
+		return (NULL);
 	aux = n;
 	if (n == 0)
 		return (NULL);
@@ -41,20 +43,18 @@ char	*ft_strdup(const char *s)
 	return (ptr);
 }
 
-char	**ft_free(char **result, int co)
+char	*ft_free(char *result, char *co)
 {
-	int	f;
+	char	*f;
 
-	if (!result || !*result || !**result)
+	if (!result || !*result || !co || !*co)
 		return (NULL);
-	f = 0;
-	while (f < co)
-	{
-		free(result[f]);
-		f++;
-	}
+	f = malloc(ft_strlen(result) + ft_strlen(co) + 1);
+	if (!f)
+		return (NULL);
+	f = ft_strjoin(result, co);
 	free(result);
-	return (NULL);
+	return (f);
 }
 
 char	*ft_next(char *buffer)
@@ -73,7 +73,7 @@ char	*ft_next(char *buffer)
 	j = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		temp[j++] = buffer[i++];
-	ft_free(&buffer, ft_strlen(buffer));
+	free(buffer);
 	return (temp);
 }
 
@@ -90,10 +90,14 @@ char	*read_file(int fd, char *buffer_prime)
 	{
 		byte_read = read(fd, buffer_read, BUFFER_SIZE);
 		if (byte_read == -1)
-			return (*ft_free(&buffer_read, ft_strlen(buffer_read)));
+		{
+			free(buffer_read);
+			return (NULL);
+		}
 		if (byte_read == 0)
 			break ;
 		buffer_read[byte_read] = '\0';
+		//buffer_prime = ft_free(buffer_prime, buffer_read);
 		buffer_prime = ft_strjoin(buffer_prime, buffer_read);
 		if (ft_strchr(buffer_prime, '\n'))
 			break ;
@@ -127,6 +131,7 @@ char	*get_next_line(int fd)
 	if (ft_strchr(temp, '\0'))
 		return (temp);
 	buffer_gnl = ft_next(buffer_gnl);
-	ft_free(&buffer_gnl, ft_strlen(buffer_gnl));
+	//ft_free(&buffer_gnl, ft_strlen(buffer_gnl));
+	free(buffer_gnl);
 	return (temp);
 }
