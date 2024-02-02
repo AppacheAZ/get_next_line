@@ -6,7 +6,7 @@
 /*   By: marcoalv <marcoalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/03 18:44:41 by marcoalv          #+#    #+#             */
-/*   Updated: 2024/01/03 18:57:06 by marcoalv         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:18:31 by marcoalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int	main(void)
 	start = clock();
 
 	//File Descriptor number to access a resources in Unix
-	fd = open("examples/100K.txt", O_RDONLY);
+	fd = open("examples/hola.txt", O_RDONLY);
 	if (fd == -1)
 	{
 		perror("File not opened");

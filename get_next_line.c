@@ -6,7 +6,7 @@
 /*   By: marcoalv <marcoalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:23:00 by marcoalv          #+#    #+#             */
-/*   Updated: 2024/01/22 19:14:35 by marcoalv         ###   ########.fr       */
+/*   Updated: 2024/01/25 17:19:04 by marcoalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,6 @@ char	*get_next_line(int fd)
 		return (temp);
 	buffer_gnl = ft_next(buffer_gnl);
 	//ft_free(&buffer_gnl, ft_strlen(buffer_gnl));
-	free(buffer_gnl);
+	//free(buffer_gnl);
 	return (temp);
 }
