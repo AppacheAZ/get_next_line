@@ -6,7 +6,7 @@
 /*   By: marcoalv <marcoalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:23:26 by marcoalv          #+#    #+#             */
-/*   Updated: 2024/01/03 19:07:16 by marcoalv         ###   ########.fr       */
+/*   Updated: 2024/02/14 18:34:24 by marcoalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,10 @@
 # define GET_NEXT_LINE_H
 # include <stdio.h>
 # include <stdlib.h>
+
+# ifndef BUFFER_SIZE
+# define BUFFER_SIZE 10
+#endif
 
 char			*get_next_line(int fd);
 char			*ft_strchr(const char *str, int c);

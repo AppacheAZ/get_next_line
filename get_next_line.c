@@ -6,7 +6,7 @@
 /*   By: marcoalv <marcoalv@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/11/20 18:23:00 by marcoalv          #+#    #+#             */
-/*   Updated: 2024/01/25 17:19:04 by marcoalv         ###   ########.fr       */
+/*   Updated: 2024/02/14 18:51:54 by marcoalv         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,18 +43,28 @@ char	*ft_strdup(const char *s)
 	return (ptr);
 }
 
-char	*ft_free(char *result, char *co)
+char	*ft_line(char *buffer)
 {
-	char	*f;
-
-	if (!result || !*result || !co || !*co)
+	char	*point;
+	char 	*line;
+	int		i;
+	
+	i = 0;
+	if (!buffer)
 		return (NULL);
-	f = malloc(ft_strlen(result) + ft_strlen(co) + 1);
-	if (!f)
+	line = ft_calloc(ft_strlen(buffer) + 1, sizeof(char));
+	point = ft_strchr(buffer, '\n');
+	if (!point || !line)
 		return (NULL);
-	f = ft_strjoin(result, co);
-	free(result);
-	return (f);
+	while (buffer[i] != '\0' || buffer[i] != '\n')
+	{
+		line[i] = buffer[i];
+		i++;
+	}
+	line[i] = '\n';
+	free(buffer);
+	return (line);
+	
 }
 
 char	*ft_next(char *buffer)
