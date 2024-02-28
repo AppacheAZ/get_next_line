@@ -22,16 +22,14 @@ char	*ft_strdup(const char *s)
 	size_t	aux;
 
 	i = 0;
+	if (!s[i])
+		return (NULL);
 	n = ft_strlen(s);
-	ptr = (char *)malloc(n + 1 * sizeof(char));
-	if (n == 0)
-		return (ptr);
-	if (!ptr || !s || !s[i])
+	ptr = (char *)malloc(n + 2 * sizeof(char));
+	if (!ptr || n == 0)
 		return (NULL);
 	aux = n;
-	if (n == 0)
-		return (NULL);
-	else if (n <= ft_strlen(s) || n > ft_strlen(s))
+	if (n <= ft_strlen(s) || n > ft_strlen(s))
 	{
 		while (aux-- || s[i] != '\0')
 		{
@@ -52,52 +50,57 @@ char	*ft_next(char *buffer)
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
+	if (!buffer[i])
+	{
+		free(buffer);
+		return (NULL);
+	}
 	temp = ft_calloc(ft_strlen(buffer) - i + 1, sizeof(char));
-	if (!temp || !buffer)
+	if (!temp)
 		return (NULL);
 	i++;
 	j = 0;
-	while (buffer[i] && buffer[i] != '\n')
-	{
+	while (buffer[i])
 		temp[j++] = buffer[i++];
-		if (buffer[i + 1] == '\0')
-			return (NULL);
-	}
 	free(buffer);
 	return (temp);
 }
 
-char	*ft_line(char *buffer, char *new_line)
+char	*ft_line(char *buffer)
 {
 	char	*line;
 	int		i;
 
 	i = 0;
-	line = ft_calloc(ft_strlen(buffer) + 2, sizeof(char));
-	if (!line || !buffer || !buffer[0] || ft_strlen(buffer) == 0)
+	if (!buffer || !buffer[0])
+		return (NULL);
+	while (buffer[i] != '\n')
+		i++;
+	line = ft_calloc(i + 2, sizeof(char));
+	i = 0;
+	if (!line)
 		return (NULL);
 	while (buffer[i] != '\n')
 	{
 		line[i] = buffer[i];
 		i++;
 	}
-	line[i] = buffer[i];
-	line[i + 1] = '\0';
-	free(buffer);
-	buffer = ft_strdup(new_line + 1);
+	if (buffer[i] == '\n')
+		line[i++] = '\n';
 	return (line);
 }
 
 char	*read_file(int fd, char *buffer_prime)
 {
 	char	*buffer_read;
+	char	*temp;
 	int		byte_read;
 
 	if (!buffer_prime)
 		buffer_prime = ft_calloc(1, 1);
 	buffer_read = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	byte_read = 1;
-	while (byte_read >= 0 && !ft_strchr(buffer_prime, '\n'))
+	while (byte_read > 0 && !ft_strchr(buffer_read, '\n'))
 	{
 		byte_read = read(fd, buffer_read, BUFFER_SIZE);
 		if (byte_read == -1)
@@ -107,10 +110,10 @@ char	*read_file(int fd, char *buffer_prime)
 		}
 		if (byte_read == 0)
 			break ;
-		buffer_read[byte_read] = '\0';
-		buffer_prime = ft_strjoin(buffer_prime, buffer_read);
-		if (ft_strchr(buffer_prime, '\n'))
-			break ;
+		buffer_read[byte_read] = 0;
+		temp = ft_strjoin(buffer_prime, buffer_read);
+		free(buffer_prime);
+		buffer_prime = temp;
 	}
 	free(buffer_read);
 	return (buffer_prime);
@@ -125,16 +128,16 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
 		return (NULL);
 	buffer_gnl = read_file(fd, buffer_gnl);
-	if (!buffer_gnl || !*buffer_gnl)
+	if (!buffer_gnl)
 		return (NULL);
 	new_line = ft_strchr(buffer_gnl, '\n');
 	if (new_line)
 	{
-		line = ft_line(buffer_gnl, new_line);
+		line = ft_line(buffer_gnl);
+		buffer_gnl = ft_next(buffer_gnl);
 		return (line);
 	}
 	line = ft_strdup(buffer_gnl);
-	free(buffer_gnl);
-	buffer_gnl = ft_next(buffer_gnl); // buffer_gnl = NULL;
+	buffer_gnl = ft_next(buffer_gnl);
 	return (line);
 }
