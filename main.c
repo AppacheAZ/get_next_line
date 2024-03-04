@@ -27,7 +27,7 @@ int	main(void)
 	start = clock();
 
 	//File Descriptor number to access a resources in Unix
-	fd = open("examples/hola.txt", O_RDONLY);
+	fd = open("examples/100k.txt", O_RDONLY);
 	if (fd == -1)
 	{
 		perror("File not opened");

@@ -15,7 +15,9 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-# define BUFFER_SIZE 10
+#ifndef BUFFER_SIZE
+# define BUFFER_SIZE 1024
+#endif
 
 char			*get_next_line(int fd);
 char			*ft_strchr(const char *str, int c);
