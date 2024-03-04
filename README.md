@@ -1,5 +1,5 @@
 # Get Next Line
-This which is part of 42's curriculum is a function used to read the next line of input from a file. This can be used in scenarios where data needs to be processed line by line, such as reading log files or parsing text documents. 
+This project which is part of 42's curriculum is a function used to read the next line of input from a file. This can be used in scenarios where data needs to be processed line by line, such as reading log files or parsing text documents. 
 Get-Next-Line is a useful tool for iterating through large datasets or handling continuous input streams.
 
 ## Tools
